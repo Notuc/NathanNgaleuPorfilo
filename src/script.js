@@ -6,24 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
-/**
- * Base
- */
-// Debug
-const gui = new dat.GUI({
-    width: 400
-})
 
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
-
-// Scene
-const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x4b47da)
-/**
- * Loaders
- */
-// Texture loader
 const textureLoader = new THREE.TextureLoader()
 
 // Draco loader
@@ -33,16 +16,22 @@ dracoLoader.setDecoderPath('draco/')
 // GLTF loader
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
+// Canvas
+const canvas = document.querySelector('canvas.webgl')
 
+// Scene
+const scene = new THREE.Scene()
+//scene.background = new THREE.Color(0x4b47da)
 /**
- * Object
+ * Loaders
  */
-const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial()
-)
+// Texture loader
 
 
+
+
+const backgroundGroundtexture = textureLoader.load('./images/ilya-pavlov-OqtafYT5kTw-unsplash(1).jpg')
+scene.background = backgroundGroundtexture
 
 //Light
 const light = new THREE.PointLight()
@@ -925,6 +914,7 @@ window.addEventListener('resize', () =>
     // Update camera
     camera.aspect = sizes.width / sizes.height
     camera.updateProjectionMatrix()
+    console.log(camera.position)
 
     // Update renderer
     renderer.setSize(sizes.width, sizes.height)
@@ -936,9 +926,9 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 4
-camera.position.y = 2
-camera.position.z = 4
+camera.position.x =4.639007104146336
+camera.position.y = 4.249058288733643
+camera.position.z = -6.8691167658816426
 scene.add(camera)
 
 // Controls

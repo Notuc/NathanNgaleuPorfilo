@@ -1,11 +1,10 @@
 import './style.css'
-import * as dat from 'lil-gui'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -21,15 +20,6 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
-//scene.background = new THREE.Color(0x4b47da)
-/**
- * Loaders
- */
-// Texture loader
-
-
-
-
 const backgroundGroundtexture = textureLoader.load('./images/ilya-pavlov-OqtafYT5kTw-unsplash(1).jpg')
 scene.background = backgroundGroundtexture
 
@@ -146,6 +136,8 @@ legtext.wrapS = THREE.RepeatWrapping
 legtext.wrapT = THREE.RepeatWrapping
 legtext.repeat.set(1,1)
 const tablelegtexture = new THREE.MeshBasicMaterial({map: legtext})
+
+
 
 //table top textures
 const tabletext = textureLoader.load('./textures/toptable.jpg')
@@ -316,6 +308,7 @@ const controllertexture = new THREE.MeshBasicMaterial({map:controllertext})
 
 let mixer = null
 
+
 gltfLoader.load(
     './Models/gundamupper.glb',
     (gltf)=>
@@ -330,6 +323,8 @@ gltfLoader.load(
         
     }
 )
+
+
 gltfLoader.load(
     './Models/gundamspear.glb',
     (gltf)=>
@@ -894,7 +889,41 @@ gltfLoader.load(
         
     }
 )
+const matcapTexture = textureLoader.load('./textures/4.png')
+const fontLoader = new FontLoader()
+ 
+fontLoader.load(
+    '/fonts/helvetiker_regular.typeface.json',
+    (font) =>
+    {
+        // Material
+        const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
 
+        // Text
+        const textGeometry = new TextGeometry(
+            '        Hello World !'+'\n to Nathan Ngaleu Porfilo \n            Enjoy !',
+            {
+                font: font,
+                size: 0.4,
+                height: 0.2,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 0.03,
+                bevelSize: 0.02,
+                bevelOffset: 0,
+                bevelSegments: 5
+            }
+           
+        )  
+        const text = new THREE.Mesh(textGeometry, material)
+            scene.add(text)
+            text.rotation.y = 3
+            text.position.x = 5.5
+            text.position.y = 3
+            text.position.z = -1
+    }
+
+)
 
 
 /**
@@ -956,9 +985,7 @@ const tick = () =>
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 // update mixer
-if(mixer != null){
-    mixer.update(deltaTime)
-}
+
     // Update controls
     controls.update()
 
@@ -968,5 +995,4 @@ if(mixer != null){
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
 }
-
-tick()
+    tick()

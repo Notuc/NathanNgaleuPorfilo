@@ -113,6 +113,14 @@ tvstandtext.wrapT = THREE.RepeatWrapping
 tvstandtext.repeat.set(1,1)
 const tvstandtexttexture = new THREE.MeshBasicMaterial({map: tvstandtext})
 
+//textures for mainmonitor
+const texttext = textureLoader.load('./textures/4.png')
+texttext.flipY = false
+texttext.wrapS = THREE.RepeatWrapping
+texttext.wrapT = THREE.RepeatWrapping
+texttext.repeat.set(1,1)
+const texttexttexture = new THREE.MeshBasicMaterial({map: texttext})
+
 //shelf
 const selftext = textureLoader.load('./textures/wallmount.jpg')
 selftext.flipY = false
@@ -883,30 +891,13 @@ gltfLoader.load(
         });
         scene.add(gltf.scene);
 
-        // Set up raycaster
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-        function onMouseClick(event) {
-            // Update mouse position with click event
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-            // Set the raycaster's origin and direction
-            raycaster.setFromCamera(mouse, camera);
-            // Calculate intersects
-            const intersects = raycaster.intersectObjects([gltf.scene]);
-            // If intersects are found, open link in new window
-            if (intersects.length > 0) {
-                window.open('http://www.example.com');
-            }
-        }
-        // Add event listener to window
-        window.addEventListener('click', onMouseClick, false);
-    }
-);gltfLoader.load(
+            }    
+        );
+gltfLoader.load(
     './Models/linkedin.glb',
     (gltf) => {
         gltf.scene.traverse((child) => {
-            //child.material = matcapTexture
+            child.material = texttexttexture
         });
         scene.add(gltf.scene);
 
@@ -917,16 +908,38 @@ gltfLoader.load(
             // Update mouse position with click event
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-            // Set the raycaster's origin and direction
             raycaster.setFromCamera(mouse, camera);
-            // Calculate intersects
             const intersects = raycaster.intersectObjects([gltf.scene]);
-            // If intersects are found, open link in new window
             if (intersects.length > 0) {
                 window.open('https://www.linkedin.com/in/nathan-ngaleu-0795a7214/');
             }
         }
-        // Add event listener to window
+        
+        window.addEventListener('click', onMouseClick, false);
+    }
+);
+gltfLoader.load(
+    './Models/GitHub.glb',
+    (gltf) => {
+        gltf.scene.traverse((child) => {
+            child.material = texttexttexture
+        });
+        scene.add(gltf.scene);
+
+        // Set up raycaster
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        function onMouseClick(event) {
+            // Update mouse position with click event
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects([gltf.scene]);
+            if (intersects.length > 0) {
+                window.open('https://github.com/Notuc/');
+            }
+        }
+        
         window.addEventListener('click', onMouseClick, false);
     }
 );
@@ -944,7 +957,7 @@ fontLoader.load(
 
         // Text
         const textGeometry = new TextGeometry(
-            '        Hello World !'+'\n to Nathan Ngaleu Portfolio \n               Enjoy !',
+            "          Hello World ! \n to Nathan Ngaleu's Portfolio \n               Enjoy ! ",
             {
                 font: font,
                 size: 0.3,
@@ -997,6 +1010,39 @@ fontLoader.load(
             text.position.y = 1
     
             text.position.z = 1.5
+    }
+
+)
+
+fontLoader.load(
+    '/fonts/helvetiker_regular.typeface.json',
+    (font) =>
+    {
+        // Material
+        const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
+
+        // Text
+        const textGeometry = new TextGeometry(
+            " Click GitHub to see some of my projects \n Click LinkedIn to find my resume ",
+            {
+                font: font,
+                size: 0.05,
+                height: 0.1,
+                curveSegments: 11,
+                bevelEnabled: true,
+                bevelThickness: 0.02,
+                bevelSize: 0.01,
+                bevelOffset: 0,
+                bevelSegments: 4
+            }
+           
+        )  
+        const text = new THREE.Mesh(textGeometry, material)
+            scene.add(text)
+            text.rotation.y = 1.5
+            text.position.x = -3.2
+            text.position.y = 2
+            text.position.z = -0.1
     }
 
 )

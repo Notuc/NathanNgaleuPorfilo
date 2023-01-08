@@ -902,10 +902,38 @@ gltfLoader.load(
         // Add event listener to window
         window.addEventListener('click', onMouseClick, false);
     }
+);gltfLoader.load(
+    './Models/linkedin.glb',
+    (gltf) => {
+        gltf.scene.traverse((child) => {
+            //child.material = matcapTexture
+        });
+        scene.add(gltf.scene);
+
+        // Set up raycaster
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        function onMouseClick(event) {
+            // Update mouse position with click event
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            // Set the raycaster's origin and direction
+            raycaster.setFromCamera(mouse, camera);
+            // Calculate intersects
+            const intersects = raycaster.intersectObjects([gltf.scene]);
+            // If intersects are found, open link in new window
+            if (intersects.length > 0) {
+                window.open('https://www.linkedin.com/in/nathan-ngaleu-0795a7214/');
+            }
+        }
+        // Add event listener to window
+        window.addEventListener('click', onMouseClick, false);
+    }
 );
 
 const matcapTexture = textureLoader.load('./textures/4.png')
 const fontLoader = new FontLoader()
+
  
 fontLoader.load(
     '/fonts/helvetiker_regular.typeface.json',
@@ -934,8 +962,8 @@ fontLoader.load(
             scene.add(text)
             text.rotation.y = 3
             text.position.x = 5.5
-            text.position.y = 4.5
-            text.position.z = -1
+            text.position.y = 3.5
+            text.position.z = -1.8
     }
 
 )

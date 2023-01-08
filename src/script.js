@@ -69,7 +69,7 @@ const overlayMaterial = new THREE.ShaderMaterial({
 
         void main()
         {
-            gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
+            gl_FragColor = vec4(0.0, 00.0, 00.0, uAlpha);
         }
     `
 })
@@ -238,6 +238,14 @@ rightpiggytext.wrapS = THREE.RepeatWrapping
 rightpiggytext.wrapT = THREE.RepeatWrapping
 rightpiggytext.repeat.set(1,1)
 const rightpiggytexture = new THREE.MeshBasicMaterial({map: rightpiggytext})
+
+//greentext
+const greentext = textureLoader.load('./textures/7.png')
+greentext.flipY = false
+greentext.wrapS = THREE.RepeatWrapping
+greentext.wrapT = THREE.RepeatWrapping
+greentext.repeat.set(1,1)
+const greentexture = new THREE.MeshBasicMaterial({map: greentext})
 
 //bottombook
 const bottomslabtext = textureLoader.load('./textures/bottomslab.jpg')
@@ -1015,6 +1023,7 @@ gltfLoader.load(
 );
 
 const matcapTexture = textureLoader.load('./textures/4.png')
+const matcapTexturee = textureLoader.load('./textures/8.png')
 const fontLoader = new FontLoader()
 
  
@@ -1046,6 +1055,39 @@ fontLoader.load(
             text.rotation.y = 3
             text.position.x = 5.5
             text.position.y = 3.5
+            text.position.z = -1.8
+    }
+
+)
+
+fontLoader.load(
+    '/fonts/helvetiker_regular.typeface.json',
+    (font) =>
+    {
+        // Material
+        const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
+
+        // Text
+        const textGeometry = new TextGeometry(
+            "          Scroll to Zoom  \n   Click & Hold To Rotate      \n     Shift + Click to Drag    ",
+            {
+                font: font,
+                size: 0.1,
+                height: 0.1,
+                curveSegments: 11,
+                bevelEnabled: true,
+                bevelThickness: 0.02,
+                bevelSize: 0.01,
+                bevelOffset: 0,
+                bevelSegments: 4
+            }
+           
+        )  
+        const text = new THREE.Mesh(textGeometry, material)
+            scene.add(text)
+            text.rotation.y = 3
+            text.position.x = 4
+            text.position.y = 2
             text.position.z = -1.8
     }
 

@@ -877,18 +877,33 @@ gltfLoader.load(
 //couch
 gltfLoader.load(
     './Models/couch.glb',
-    (gltf)=>
-    {
-        gltf.scene.traverse((child) =>
-        {
+    (gltf) => {
+        gltf.scene.traverse((child) => {
             child.material = couchtexture
-        }
-        )
-        
+        });
         scene.add(gltf.scene);
-        
+
+        // Set up raycaster
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        function onMouseClick(event) {
+            // Update mouse position with click event
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            // Set the raycaster's origin and direction
+            raycaster.setFromCamera(mouse, camera);
+            // Calculate intersects
+            const intersects = raycaster.intersectObjects([gltf.scene]);
+            // If intersects are found, open link in new window
+            if (intersects.length > 0) {
+                window.open('http://www.example.com');
+            }
+        }
+        // Add event listener to window
+        window.addEventListener('click', onMouseClick, false);
     }
-)
+);
+
 const matcapTexture = textureLoader.load('./textures/4.png')
 const fontLoader = new FontLoader()
  
@@ -901,17 +916,17 @@ fontLoader.load(
 
         // Text
         const textGeometry = new TextGeometry(
-            '        Hello World !'+'\n to Nathan Ngaleu Porfilo \n            Enjoy !',
+            '        Hello World !'+'\n to Nathan Ngaleu Portfolio \n               Enjoy !',
             {
                 font: font,
-                size: 0.4,
-                height: 0.2,
-                curveSegments: 12,
+                size: 0.3,
+                height: 0.1,
+                curveSegments: 11,
                 bevelEnabled: true,
-                bevelThickness: 0.03,
-                bevelSize: 0.02,
+                bevelThickness: 0.02,
+                bevelSize: 0.01,
                 bevelOffset: 0,
-                bevelSegments: 5
+                bevelSegments: 4
             }
            
         )  
@@ -919,8 +934,41 @@ fontLoader.load(
             scene.add(text)
             text.rotation.y = 3
             text.position.x = 5.5
-            text.position.y = 3
+            text.position.y = 4.5
             text.position.z = -1
+    }
+
+)
+fontLoader.load(
+    '/fonts/helvetiker_regular.typeface.json',
+    (font) =>
+    {
+        // Material
+        const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
+
+        // Text
+        const textGeometry = new TextGeometry(
+            " I'm a computer science \n student I am currently looking \n for any work experience from \n linux to ML/AI from Software \n Development to Engineering \n Willing to work on anything\n programming related ",
+            {
+                font: font,
+                size: 0.05,
+                height: 0.1,
+                curveSegments: 11,
+                bevelEnabled: true,
+                bevelThickness: 0.02,
+                bevelSize: 0.01,
+                bevelOffset: 0,
+                bevelSegments: 4
+            }
+           
+        )  
+        const text = new THREE.Mesh(textGeometry, material)
+            scene.add(text)
+            text.rotation.y = 3.05
+            text.position.x = -1
+            text.position.y = 1
+    
+            text.position.z = 1.5
     }
 
 )
@@ -955,9 +1003,9 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
-camera.position.x =4.639007104146336
-camera.position.y = 4.249058288733643
-camera.position.z = -6.8691167658816426
+camera.position.x =4.225788599100936
+camera.position.y = 5.233894818281334
+camera.position.z = -7.82733311706906
 scene.add(camera)
 
 // Controls
@@ -969,7 +1017,7 @@ controls.enableDamping = true
  */
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    antialias: true
+    alpha: true
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))

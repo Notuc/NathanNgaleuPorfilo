@@ -29,7 +29,7 @@ const loadingManager = new THREE.LoadingManager(
         }, 500)
     },
 
-    // Progress
+    // Progress LOADED
     (itemUrl, itemsLoaded, itemsTotal) =>
     {
         // Calculate the progress and update the loadingBarElement

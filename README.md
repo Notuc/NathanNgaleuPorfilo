@@ -2,6 +2,7 @@
 This portfolio was created using javascript and the three.js framework.
 The models where made edited in the blender software.
 The Portfolio is still going undeveoplment, some issues arrive from the api
+https://nathan-ngaleu-porfilo.vercel.app/
 
 # Incomming Updates
 Revlant Work experience and React/ReactThreeFiber
